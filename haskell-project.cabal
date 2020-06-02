@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 88bffb1492d161e4179358322029770a9d7e5a6ef791b503e320ef1d9a412f8b
+-- hash: 48027fe1381ef95502a8abf25d0d16ebbaefd80088c26883a4395d0d4fdc4ac6
 
 name:           haskell-project
 version:        0.1.0.0
@@ -27,6 +27,8 @@ source-repository head
 
 library
   exposed-modules:
+      Angler
+      Game
       Lib
   other-modules:
       Paths_haskell_project
