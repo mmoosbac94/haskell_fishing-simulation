@@ -1,7 +1,5 @@
 module Main where
 
-import Lib
+import Game
 
-main = do
-    someFunc
-    randomFunc
+main = startGame
