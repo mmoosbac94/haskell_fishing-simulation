@@ -1,12 +1,16 @@
-module Game where    
+module Game (startGame) where    
 
+import Text.Read
+import Data.Maybe
 import Angler
+
+angeln = "Angeln" 
 
 startGame = do
     putStrLn "Herzlich Willkommen zur Angelsimulation!"
-    putStrLn "Tippe 'F' ein, wenn du bereit bist fortzufahren."
+    putStrLn $"Tippe '" ++ angeln ++ "' ein, wenn du bereit bist zu angeln."
     input <- getLine
-    checkForInput input
+    checkForValidInput input
 
 createAngler = do
     putStrLn "Alles klar, wir wüssten natürlich gerne noch mit wem wir es heute zu tun haben!"
@@ -14,16 +18,24 @@ createAngler = do
     anglerName <- getLine
     putStrLn $"Okay, du bist also " ++ anglerName ++ ". Es freut uns dich kennenzulernen!"
     putStrLn "Bitte gib jetzt dein Alter ein: "
-    anglerAge <- getLine
+    anglerAgeTest <- getLine
+    anglerAge <- checkForValidAge anglerAgeTest
     let angler = Angler {name = anglerName, age = anglerAge}
-    putStrLn $"Vielen Dank! Du heisst also " ++ name angler ++ " und bist " ++ age angler ++ " alt."
+    putStrLn $"Vielen Dank! Du heisst also " ++ name angler ++ " und bist " ++ show(age angler) ++ " Jahre alt."
 
-checkForInput :: String -> IO()
-checkForInput input
-    | input == "F" = createAngler
+checkForValidInput :: String -> IO()
+checkForValidInput input
+    | input == angeln = createAngler
     | otherwise = do
-        putStrLn "Du musst 'F' eingeben, um fortfahren zu können..."
+        putStrLn $"Du musst '" ++ angeln ++ "' eingeben, um fortfahren zu können..."
         input <- getLine
-        checkForInput input    
+        checkForValidInput input
 
-
+checkForValidAge :: String -> IO Int
+checkForValidAge anglerAge
+    -- 'return' wandelt Int in IO Int um + 'read' castet String in Int (weil vorher mit Maybe bereits überprüft)
+    | isJust (readMaybe anglerAge :: Maybe Int) = return (read anglerAge :: Int)
+    | otherwise = do
+        putStrLn "Butter bei die Fische, gib ein valides Alter ein..."
+        input <- getLine
+        checkForValidAge input

@@ -2,5 +2,5 @@ module Angler where
 
 data Angler = Angler {
     name :: String,
-    age :: String
+    age :: Int
 } deriving (Show)
