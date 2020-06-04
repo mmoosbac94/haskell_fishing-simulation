@@ -2,4 +2,6 @@ module Main where
 
 import Game
 
-main = startGame
+main = do
+    startGame
+    startFishing
