@@ -1,4 +1,4 @@
-module Game (startGame) where    
+module Game (startGame, startFishing) where    
 
 import Text.Read
 import Data.Maybe
@@ -22,6 +22,12 @@ createAngler = do
     anglerAge <- checkForValidAge anglerAgeTest
     let angler = Angler {name = anglerName, age = anglerAge}
     putStrLn $"Vielen Dank! Du heisst also " ++ name angler ++ " und bist " ++ show(age angler) ++ " Jahre alt."
+
+startFishing = do
+    putStrLn "Lass uns die Angel auswerfen..."
+    putStrLn "(Delay)"
+    putStrLn "...Nanu, es hat etwas angebissen!... Es ist ein ..."
+
 
 checkForValidInput :: String -> IO()
 checkForValidInput input
