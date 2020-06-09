@@ -3,6 +3,7 @@ module Game (startGame, startFishing) where
 import Text.Read
 import Data.Maybe
 import Angler
+import Fish
 
 angeln = "Angeln" 
 
@@ -26,7 +27,10 @@ createAngler = do
 startFishing = do
     putStrLn "Lass uns die Angel auswerfen..."
     putStrLn "(Delay)"
-    putStrLn "...Nanu, es hat etwas angebissen!... Es ist ein ..."
+    let generatedFish = generateFish
+    putStrLn $"...Nanu, es hat etwas angebissen!... Es ist ein ... " ++ show(generatedFish)
+    input <- getLine
+    startFishing
 
 
 checkForValidInput :: String -> IO()
