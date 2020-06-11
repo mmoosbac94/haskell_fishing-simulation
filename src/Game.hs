@@ -27,7 +27,7 @@ createAngler = do
 startFishing = do
     putStrLn "Lass uns die Angel auswerfen..."
     putStrLn "(Delay)"
-    let generatedFish = generateFish
+    generatedFish <- generateFish
     putStrLn $"...Nanu, es hat etwas angebissen!... Es ist ein ... " ++ show(generatedFish)
     input <- getLine
     startFishing
