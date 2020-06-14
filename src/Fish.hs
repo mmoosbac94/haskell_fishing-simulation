@@ -1,4 +1,4 @@
-module Fish (Fish(..), generateFish, generateRandomWeight) where
+module Fish (Fish(..), generateFish) where
 
 import System.Random
 
@@ -10,8 +10,8 @@ data Fish = Fish {
 } deriving (Show)
 
 
-data SmallFishes = Goldfisch | Guppi | Sardine
-data BigFishes = Hai | Barsch | Zander deriving (Enum)
+smallFishes = ["Goldfisch", "Guppi", "Sardine"]
+bigFishes = ["Hai", "Barsch", "Zander"]
 
 generateRandomWeight :: IO Int
 generateRandomWeight = do
@@ -23,12 +23,15 @@ generateRandomLength = do
     gen <- newStdGen
     return (head (randomRs (3,100) gen) :: Int)
 
---generateRandomFishName :: IO String
---generateRandomFishName = do
-        
+generateRandomFishName :: IO String
+generateRandomFishName = do
+    gen <- newStdGen
+    let number = (head (randomRs (0,2) gen) :: Int)
+    return $smallFishes!!number
 
 generateFish :: IO Fish
 generateFish = do
+    name <- generateRandomFishName
     weight <- generateRandomWeight
     length <- generateRandomLength
-    return Fish {fishName ="Goldfisch", fishLength=length, fishWeight=weight}
+    return Fish {fishName=name, fishLength=length, fishWeight=weight}
