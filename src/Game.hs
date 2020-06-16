@@ -10,12 +10,13 @@ import Fish
 
 angeln = "Angeln"
 los = "Los gehts!"
+ready = "R"
 
 startGame = do
     putStrLn "Herzlich Willkommen zur Angelsimulation!"
     putStrLn $"Tippe '" ++ angeln ++ "' ein, wenn du bereit bist zu angeln."
     input <- getLine
-    checkForValidInput input
+    checkForValidAngelnInput input
 
 createAngler = do
     putStrLn "Alles klar, wir wüssten natürlich gerne noch mit wem wir es heute zu tun haben!"
@@ -29,7 +30,7 @@ createAngler = do
     putStrLn $"Vielen Dank! Du heisst also " ++ name angler ++ " und bist " ++ show(age angler) ++ " Jahre alt."
     putStrLn $"Wenn du loslegen möchtest tippe '" ++ los ++ "' ein."
     input <- getLine
-    checkForValidInput input
+    checkForValidLosInput input
 
 startFishing = do
     putStrLn "Alles klar, Angel wird ausgeworfen..."
@@ -39,18 +40,35 @@ startFishing = do
     generatedFish <- generateFish
     putStrLn $"...Nanu, es hat etwas angebissen! Es ist ein " ++ show(fishName generatedFish) ++ " mit einem Gewicht von " ++ 
         show(fishWeight generatedFish) ++ " g und einer Länge von " ++ show(fishLength generatedFish) ++ " cm."
+    putStrLn $"Du hast noch nicht genug? Wirf die Angeln nochmal aus, indem du '" ++ ready ++ "' eingibst."    
     input <- getLine
+    checkForValidReadyInput input
     startFishing
 
 
-checkForValidInput :: String -> IO()
-checkForValidInput input
+checkForValidAngelnInput :: String -> IO()
+checkForValidAngelnInput input
     | input == angeln = createAngler
+    | otherwise = do
+        putStrLn $"Du musst '" ++ angeln ++ "' eingeben!"
+        input <- getLine
+        checkForValidAngelnInput input        
+
+checkForValidLosInput :: String -> IO()
+checkForValidLosInput input
     | input == los = startFishing
     | otherwise = do
-        putStrLn "Versuche es erneut, kann ja nicht so schwer sein.."
+        putStrLn $"Du musst '" ++ los ++ "' eingeben!"
         input <- getLine
-        checkForValidInput input
+        checkForValidLosInput input        
+
+checkForValidReadyInput :: String -> IO()
+checkForValidReadyInput input
+    | input == ready = startFishing
+    | otherwise = do
+        putStrLn $"Du musst '" ++ ready ++ "' eingeben!"
+        input <- getLine
+        checkForValidReadyInput input    
 
 checkForValidAge :: String -> IO Int
 checkForValidAge anglerAge
