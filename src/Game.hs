@@ -8,7 +8,8 @@ import Data.Maybe
 import Angler
 import Fish
 
-angeln = "Angeln" 
+angeln = "Angeln"
+los = "Los gehts!"
 
 startGame = do
     putStrLn "Herzlich Willkommen zur Angelsimulation!"
@@ -26,9 +27,12 @@ createAngler = do
     anglerAge <- checkForValidAge anglerAgeTest
     let angler = Angler {name = anglerName, age = anglerAge}
     putStrLn $"Vielen Dank! Du heisst also " ++ name angler ++ " und bist " ++ show(age angler) ++ " Jahre alt."
+    putStrLn $"Wenn du loslegen möchtest tippe '" ++ los ++ "' ein."
+    input <- getLine
+    checkForValidInput input
 
 startFishing = do
-    putStrLn "Lass uns die Angel auswerfen..."
+    putStrLn "Alles klar, Angel wird ausgeworfen..."
     randomDelay <- generateRandomDelay
     print randomDelay
     threadDelay randomDelay
@@ -42,8 +46,9 @@ startFishing = do
 checkForValidInput :: String -> IO()
 checkForValidInput input
     | input == angeln = createAngler
+    | input == los = startFishing
     | otherwise = do
-        putStrLn $"Du musst '" ++ angeln ++ "' eingeben, um fortfahren zu können..."
+        putStrLn "Versuche es erneut, kann ja nicht so schwer sein.."
         input <- getLine
         checkForValidInput input
 
