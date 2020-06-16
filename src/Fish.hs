@@ -1,15 +1,37 @@
-module Fish where
+module Fish (Fish(..), generateFish) where
 
-import System.Random    
+import System.Random
 
 -- Record Syntax
 data Fish = Fish {
-    name :: String,
-    length :: Int,
-    weight :: Int
+    fishName :: String,
+    fishLength :: Int,
+    fishWeight :: Int
 } deriving (Show)
 
 
+smallFishes = ["Goldfisch", "Guppi", "Sardine"]
+bigFishes = ["Hai", "Barsch", "Zander"]
+
+generateRandomWeight :: IO Int
 generateRandomWeight = do
-    gen <- getStdGen
-    print $"Zufällige Zahl: " ++ show (head (randomRs (500,10000) gen) :: Int)
+    gen <- newStdGen
+    return (head (randomRs (500,10000) gen) :: Int)
+
+generateRandomLength :: IO Int
+generateRandomLength = do
+    gen <- newStdGen
+    return (head (randomRs (3,100) gen) :: Int)
+
+generateRandomFishName :: IO String
+generateRandomFishName = do
+    gen <- newStdGen
+    let number = (head (randomRs (0,2) gen) :: Int)
+    return $smallFishes!!number
+
+generateFish :: IO Fish
+generateFish = do
+    name <- generateRandomFishName
+    weight <- generateRandomWeight
+    length <- generateRandomLength
+    return Fish {fishName=name, fishLength=length, fishWeight=weight}

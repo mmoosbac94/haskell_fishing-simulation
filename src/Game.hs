@@ -1,8 +1,12 @@
 module Game (startGame, startFishing) where    
 
+import Control.Concurrent
+import System.Random
+
 import Text.Read
 import Data.Maybe
 import Angler
+import Fish
 
 angeln = "Angeln" 
 
@@ -25,8 +29,14 @@ createAngler = do
 
 startFishing = do
     putStrLn "Lass uns die Angel auswerfen..."
-    putStrLn "(Delay)"
-    putStrLn "...Nanu, es hat etwas angebissen!... Es ist ein ..."
+    randomDelay <- generateRandomDelay
+    print randomDelay
+    threadDelay randomDelay
+    generatedFish <- generateFish
+    putStrLn $"...Nanu, es hat etwas angebissen! Es ist ein " ++ show(fishName generatedFish) ++ " mit einem Gewicht von " ++ 
+        show(fishWeight generatedFish) ++ " g und einer Länge von " ++ show(fishLength generatedFish) ++ " cm."
+    input <- getLine
+    startFishing
 
 
 checkForValidInput :: String -> IO()
@@ -45,3 +55,8 @@ checkForValidAge anglerAge
         putStrLn "Butter bei die Fische, gib ein valides Alter ein..."
         input <- getLine
         checkForValidAge input
+
+generateRandomDelay :: IO Int
+generateRandomDelay = do
+    gen <- newStdGen
+    return (head (randomRs (1000000,10000000) gen) :: Int)        
