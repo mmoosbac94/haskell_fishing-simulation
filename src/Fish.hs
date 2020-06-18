@@ -7,7 +7,7 @@ data Fish = Fish {
     fishName :: String,
     fishLength :: Int,
     fishWeight :: Int
-} deriving (Show)
+} deriving (Show, Eq)
 
 data SmallFishType = Goldfisch | Guppi | Sardine deriving (Show)
 data BigFishType = Hai | Barsch | Zander deriving (Show)
