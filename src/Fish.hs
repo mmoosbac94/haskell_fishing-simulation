@@ -9,10 +9,11 @@ data Fish = Fish {
     fishWeight :: Int
 } deriving (Show)
 
---data FishType = Goldfisch | Guppi | Sardine deriving (Show)
+data SmallFishType = Goldfisch | Guppi | Sardine deriving (Show)
+data BigFishType = Hai | Barsch | Zander deriving (Show)
 
-smallFishes = ["Goldfisch", "Guppi", "Sardine"]
-bigFishes = ["Hai", "Barsch", "Zander"]
+smallFishes = [Goldfisch, Guppi, Sardine]
+bigFishes = [Hai, Barsch, Zander]
 
 generateRandomWeight :: IO Int
 generateRandomWeight = do
@@ -24,7 +25,7 @@ generateRandomLength = do
     gen <- newStdGen
     return (head (randomRs (3,100) gen) :: Int)
 
-generateRandomFishName :: IO String
+generateRandomFishName :: IO SmallFishType
 generateRandomFishName = do
     gen <- newStdGen
     let number = (head (randomRs (0,2) gen) :: Int)
@@ -32,7 +33,8 @@ generateRandomFishName = do
 
 generateFish :: IO Fish
 generateFish = do
-    name <- generateRandomFishName
+    fishName <- generateRandomFishName
+    let rightName = show fishName
     weight <- generateRandomWeight
     length <- generateRandomLength
-    return Fish {fishName=name, fishLength=length, fishWeight=weight}
+    return Fish {fishName=rightName, fishLength=length, fishWeight=weight}
