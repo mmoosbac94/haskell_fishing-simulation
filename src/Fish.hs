@@ -9,6 +9,7 @@ data Fish = Fish {
     fishWeight :: Int
 } deriving (Show)
 
+--data FishType = Goldfisch | Guppi | Sardine deriving (Show)
 
 smallFishes = ["Goldfisch", "Guppi", "Sardine"]
 bigFishes = ["Hai", "Barsch", "Zander"]
