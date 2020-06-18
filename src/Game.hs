@@ -48,7 +48,7 @@ startFishing fishBag = do
     
     putStrLn $"Möchtest du die/den " ++ show(fishName generatedFish) ++ " in die Tasche stecken? (Ja/Nein)"
     input <- getLine
-    let newFishBag = checkPutInFishBag input generatedFish fishBag
+    newFishBag <- checkPutInFishBag input generatedFish fishBag
     if fishBag == newFishBag then putStrLn "Fisch wurde freigelassen" else putStrLn "Fisch wurde in Tasche gepackt"
     putStrLn $"Deine Tasche: " ++ show newFishBag
     
@@ -57,10 +57,15 @@ startFishing fishBag = do
     checkForValidReadyInput input newFishBag
 
 
-checkPutInFishBag :: String -> Fish -> [Fish] -> [Fish]
+checkPutInFishBag :: String -> Fish -> [Fish] -> IO [Fish]
 checkPutInFishBag input generatedFish fishBag
-    | input == "Ja" = generatedFish : fishBag
-    | input == "Nein" = fishBag
+    | input == "Ja" = return $generatedFish : fishBag
+    | input == "Nein" = return fishBag
+    | otherwise = do
+        putStrLn "Gib Ja oder Nein ein!"
+        input <- getLine
+        checkPutInFishBag input generatedFish fishBag
+
 
 checkForValidAngelnInput :: String -> IO()
 checkForValidAngelnInput input
