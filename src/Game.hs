@@ -13,9 +13,6 @@ angeln = "Angeln"
 los = "Los gehts!"
 ready = "R"
 
---fishBag :: [Fish]
---fishBag = []
-
 startGame = do
     putStrLn "Herzlich Willkommen zur Angelsimulation!"
     putStrLn $"Tippe '" ++ angeln ++ "' ein, wenn du bereit bist zu angeln."
