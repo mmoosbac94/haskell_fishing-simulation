@@ -23,6 +23,7 @@ dependencies:
 - base >= 4.7 && < 5
 - random
 - HTTP
+- http-conduit
 - aeson
 - attoparsec
 - bytestring
@@ -30,6 +31,7 @@ dependencies:
 - network-uri
 - utf8-string
 - vector
+- text
 
 library:
   source-dirs: src
