@@ -10,8 +10,8 @@ import Angler
 import Fish
 
 angeln = "Angeln"
-los = "Los gehts!"
 ready = "R"
+los = "Los!"
 
 startGame = do
     putStrLn "Herzlich Willkommen zur Angelsimulation!"
@@ -65,20 +65,20 @@ checkPutInFishBag input generatedFish fishBag
 
 
 checkForValidAngelnInput :: String -> IO()
-checkForValidAngelnInput input
-    | input == angeln = createAngler
-    | otherwise = do
-        putStrLn $"Du musst '" ++ angeln ++ "' eingeben!"
-        input <- getLine
-        checkForValidAngelnInput input        
+checkForValidAngelnInput "Angeln" = createAngler
+checkForValidAngelnInput x = do
+    putStrLn $"Du musst '" ++ angeln ++ "' eingeben!"
+    input <- getLine
+    checkForValidAngelnInput input    
+
 
 checkForValidLosInput :: String -> IO()
-checkForValidLosInput input
-    | input == los = startFishing []
-    | otherwise = do
-        putStrLn $"Du musst '" ++ los ++ "' eingeben!"
-        input <- getLine
-        checkForValidLosInput input        
+checkForValidLosInput "Los!" = startFishing []
+checkForValidLosInput x = do
+    putStrLn $"Du musst '" ++ los ++ "' eingeben!"
+    input <- getLine
+    checkForValidLosInput input  
+      
 
 checkForValidReadyInput :: String -> [Fish] -> IO()
 checkForValidReadyInput input fishBag
