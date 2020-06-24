@@ -1,4 +1,4 @@
-module Fish (Fish(..), generateFish) where
+module Fish (Fish(..), generateFish, checkifBigFish) where
 
 import System.Random
 
@@ -36,3 +36,8 @@ generateFish = do
     weight <- generateRandomWeight
     length <- generateRandomLength
     return Fish {fishName=fishNameString, fishLength=length, fishWeight=weight}
+
+checkifBigFish :: Int -> Bool
+checkifBigFish weight
+    | weight >= 5000 = True
+    | otherwise = False

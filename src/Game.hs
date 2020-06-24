@@ -40,8 +40,10 @@ startFishing fishBag = do
     print randomDelay
     threadDelay randomDelay
     generatedFish <- generateFish
-    putStrLn $"...Nanu, es hat etwas angebissen! Es ist ein/e " ++ show(fishName generatedFish) ++ " mit einem Gewicht von " ++ 
-        show(fishWeight generatedFish) ++ " g und einer Länge von " ++ show(fishLength generatedFish) ++ " cm."
+
+    let weight = fishWeight generatedFish
+    let isBig = checkifBigFish weight
+    printSuccessBasedOnWeight isBig generatedFish
     
     putStrLn $"Möchtest du die/den " ++ show(fishName generatedFish) ++ " in die Tasche stecken? (Ja/Nein)"
     input <- getLine
@@ -52,6 +54,12 @@ startFishing fishBag = do
     putStrLn $"Du hast noch nicht genug? Wirf die Angeln nochmal aus, indem du '" ++ ready ++ "' eingibst."    
     input <- getLine
     checkForValidReadyInput input newFishBag
+
+
+printSuccessBasedOnWeight :: Bool -> Fish -> IO()
+printSuccessBasedOnWeight isBig generatedFish
+    | isBig = putStrLn $"...Nanu, es hat etwas GROßES angebissen! Es ist ein/e " ++ show(fishName generatedFish) ++ " mit einem Gewicht von " ++ show(fishWeight generatedFish) ++ " g und einer Länge von " ++ show(fishLength generatedFish) ++ " cm."
+    | otherwise = putStrLn $"...Nanu, es hat nur etwas Kleines angebissen! Es ist ein/e " ++ show(fishName generatedFish) ++ " mit einem Gewicht von " ++ show(fishWeight generatedFish) ++ " g und einer Länge von " ++ show(fishLength generatedFish) ++ " cm."    
 
 
 checkPutInFishBag :: String -> Fish -> [Fish] -> IO [Fish]
