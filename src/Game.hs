@@ -2,6 +2,7 @@ module Game (startGame, startFishing) where
 
 import Control.Concurrent
 import System.Random
+import Data.Typeable
 
 import Text.Read
 import Data.Maybe
@@ -9,8 +10,8 @@ import Angler
 import Fish
 
 angeln = "Angeln"
-los = "Los gehts!"
 ready = "R"
+los = "Los!"
 
 startGame = do
     putStrLn "Herzlich Willkommen zur Angelsimulation!"
@@ -32,43 +33,60 @@ createAngler = do
     input <- getLine
     checkForValidLosInput input
 
-startFishing = do
+startFishing :: [Fish] -> IO()
+startFishing fishBag = do
     putStrLn "Alles klar, Angel wird ausgeworfen..."
     randomDelay <- generateRandomDelay
     print randomDelay
     threadDelay randomDelay
     generatedFish <- generateFish
-    putStrLn $"...Nanu, es hat etwas angebissen! Es ist ein " ++ show(fishName generatedFish) ++ " mit einem Gewicht von " ++ 
+    putStrLn $"...Nanu, es hat etwas angebissen! Es ist ein/e " ++ show(fishName generatedFish) ++ " mit einem Gewicht von " ++ 
         show(fishWeight generatedFish) ++ " g und einer Länge von " ++ show(fishLength generatedFish) ++ " cm."
+    
+    putStrLn $"Möchtest du die/den " ++ show(fishName generatedFish) ++ " in die Tasche stecken? (Ja/Nein)"
+    input <- getLine
+    newFishBag <- checkPutInFishBag input generatedFish fishBag
+    if fishBag == newFishBag then putStrLn "Fisch wurde freigelassen" else putStrLn "Fisch wurde in Tasche gepackt"
+    putStrLn $"Deine Tasche: " ++ show newFishBag
+    
     putStrLn $"Du hast noch nicht genug? Wirf die Angeln nochmal aus, indem du '" ++ ready ++ "' eingibst."    
     input <- getLine
-    checkForValidReadyInput input
-    startFishing
+    checkForValidReadyInput input newFishBag
+
+
+checkPutInFishBag :: String -> Fish -> [Fish] -> IO [Fish]
+checkPutInFishBag input generatedFish fishBag
+    | input == "Ja" = return $generatedFish : fishBag
+    | input == "Nein" = return fishBag
+    | otherwise = do
+        putStrLn "Gib Ja oder Nein ein!"
+        input <- getLine
+        checkPutInFishBag input generatedFish fishBag
 
 
 checkForValidAngelnInput :: String -> IO()
-checkForValidAngelnInput input
-    | input == angeln = createAngler
-    | otherwise = do
-        putStrLn $"Du musst '" ++ angeln ++ "' eingeben!"
-        input <- getLine
-        checkForValidAngelnInput input        
+checkForValidAngelnInput "Angeln" = createAngler
+checkForValidAngelnInput x = do
+    putStrLn $"Du musst '" ++ angeln ++ "' eingeben!"
+    input <- getLine
+    checkForValidAngelnInput input    
+
 
 checkForValidLosInput :: String -> IO()
-checkForValidLosInput input
-    | input == los = startFishing
-    | otherwise = do
-        putStrLn $"Du musst '" ++ los ++ "' eingeben!"
-        input <- getLine
-        checkForValidLosInput input        
+checkForValidLosInput "Los!" = startFishing []
+checkForValidLosInput x = do
+    putStrLn $"Du musst '" ++ los ++ "' eingeben!"
+    input <- getLine
+    checkForValidLosInput input  
+      
 
-checkForValidReadyInput :: String -> IO()
-checkForValidReadyInput input
-    | input == ready = startFishing
+checkForValidReadyInput :: String -> [Fish] -> IO()
+checkForValidReadyInput input fishBag
+    | input == ready = startFishing fishBag
     | otherwise = do
         putStrLn $"Du musst '" ++ ready ++ "' eingeben!"
         input <- getLine
-        checkForValidReadyInput input    
+        checkForValidReadyInput input fishBag    
 
 checkForValidAge :: String -> IO Int
 checkForValidAge anglerAge
