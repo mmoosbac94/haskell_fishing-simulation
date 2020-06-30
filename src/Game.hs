@@ -23,6 +23,7 @@ startGame = do
 
     checkForValidAngelnInput input
 
+printWeather = do
     weather <- generateWeather
     putStrLn $"Das Wetter: " ++ show(main weather) ++ " und eine Temperatur von " ++ show(temperature weather) ++ " Grad Celsius."        
     showBestFishingSpot $main weather
@@ -87,6 +88,7 @@ checkPutInFishBag input generatedFish fishBag
 
 checkForValidAngelnInput :: String -> IO()
 checkForValidAngelnInput "Angeln" = createAngler
+
 checkForValidAngelnInput x = do
     putStrLn $"Du musst '" ++ angeln ++ "' eingeben!"
     input <- getLine
@@ -94,7 +96,9 @@ checkForValidAngelnInput x = do
 
 
 checkForValidLosInput :: String -> IO()
-checkForValidLosInput "Los!" = startFishing []
+checkForValidLosInput "Los!" = do
+    printWeather 
+    startFishing []
 checkForValidLosInput x = do
     putStrLn $"Du musst '" ++ los ++ "' eingeben!"
     input <- getLine
