@@ -1,6 +1,7 @@
 module Fish (Fish(..), generateFish, checkifBigFish) where
 
 import System.Random
+import Weather
 
 -- Record Syntax
 data Fish = Fish {
@@ -26,20 +27,25 @@ generateRandomLength = do
     gen <- newStdGen
     return (head (randomRs (3,100) gen) :: Int)
 
-generateRandomFishName :: IO FishType
-generateRandomFishName = do
+generateRandomFishName :: WeatherConditions -> IO FishType
+generateRandomFishName checkedWeather = do
     gen <- newStdGen
-    -- Weiteres Beispiel für HighOrder-Function (Der Funktion Head wird die Funktion randomRs übergeben)
-    let number = (head (randomRs (0,length lakeFish - 1) gen) :: Int)
-    return $lakeFish!!number
+    if checkedWeather == Sonnig || checkedWeather == Wolkig then do
+        -- Weiteres Beispiel für HighOrder-Function (Der Funktion Head wird die Funktion randomRs übergeben)
+        let number = (head (randomRs (0,length seaFish - 1) gen) :: Int)
+        return $seaFish!!number
+    else do
+        let number = (head (randomRs (0,length lakeFish - 1) gen) :: Int)
+        return $lakeFish!!number
 
-generateFish :: IO Fish
-generateFish = do
-    fishName <- generateRandomFishName
-    let fishNameString = show fishName
-    weight <- generateRandomWeight
-    length <- generateRandomLength
-    return Fish {fishName=fishNameString, fishLength=length, fishWeight=weight}
+
+generateFish :: WeatherConditions -> IO Fish 
+generateFish checkedWeather = do
+        fishName <- generateRandomFishName checkedWeather
+        let fishNameString = show fishName
+        weight <- generateRandomWeight
+        length <- generateRandomLength
+        return Fish {fishName=fishNameString, fishLength=length, fishWeight=weight}  
 
 checkifBigFish :: Int -> Bool
 checkifBigFish weight

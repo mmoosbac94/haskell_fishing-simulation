@@ -20,10 +20,10 @@ startGame = do
     putStrLn "Herzlich Willkommen zur Angelsimulation!"
     putStrLn $"Tippe '" ++ angeln ++ "' ein, wenn du bereit bist zu angeln."
     input <- getLine
-
     checkForValidAngelnInput input
 
-printWeather = do
+checkWeather :: IO WeatherConditions
+checkWeather = do
     weather <- generateWeather
     putStrLn $"Das Wetter: " ++ show(main weather) ++ " und eine Temperatur von " ++ show(temperature weather) ++ " Grad Celsius."        
     showBestFishingSpot $main weather
@@ -31,6 +31,7 @@ printWeather = do
     if main weather == Hagel
         then exitSuccess  -- Programm an dieser Stelle beenden    
     else print $" gehen wir " ++ location ++ " angeln ..."
+    return (main weather)
 
 
 createAngler = do
@@ -47,14 +48,14 @@ createAngler = do
     input <- getLine
     checkForValidLosInput input
 
-startFishing :: [Fish] -> IO()
-startFishing fishBag = do
+startFishing :: [Fish] -> WeatherConditions -> IO()
+startFishing fishBag checkedWeather = do
     putStrLn "Alles klar, Angel wird ausgeworfen..."
     randomDelay <- generateRandomDelay
     print randomDelay
     threadDelay randomDelay
 
-    generatedFish <- generateFish
+    generatedFish <- generateFish checkedWeather
     let weight = fishWeight generatedFish
     let isBig = checkifBigFish weight
     printSuccessBasedOnWeight isBig generatedFish
@@ -67,7 +68,7 @@ startFishing fishBag = do
     
     putStrLn $"Du hast noch nicht genug? Wirf die Angeln nochmal aus, indem du '" ++ ready ++ "' eingibst."    
     input <- getLine
-    checkForValidReadyInput input newFishBag
+    checkForValidReadyInput input newFishBag checkedWeather
 
 
 printSuccessBasedOnWeight :: Bool -> Fish -> IO()
@@ -97,21 +98,21 @@ checkForValidAngelnInput x = do
 
 checkForValidLosInput :: String -> IO()
 checkForValidLosInput "Los!" = do
-    printWeather 
-    startFishing []
+    checkedWeather <- checkWeather 
+    startFishing [] checkedWeather
 checkForValidLosInput x = do
     putStrLn $"Du musst '" ++ los ++ "' eingeben!"
     input <- getLine
     checkForValidLosInput input  
       
 
-checkForValidReadyInput :: String -> [Fish] -> IO()
-checkForValidReadyInput input fishBag
-    | input == ready = startFishing fishBag
+checkForValidReadyInput :: String -> [Fish] -> WeatherConditions -> IO()
+checkForValidReadyInput input fishBag checkedWeather
+    | input == ready = startFishing fishBag checkedWeather
     | otherwise = do
         putStrLn $"Du musst '" ++ ready ++ "' eingeben!"
         input <- getLine
-        checkForValidReadyInput input fishBag    
+        checkForValidReadyInput input fishBag checkedWeather    
 
 checkForValidAge :: String -> IO Int
 checkForValidAge anglerAge
