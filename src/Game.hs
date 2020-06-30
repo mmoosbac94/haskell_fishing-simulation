@@ -98,7 +98,9 @@ checkForValidReadyInput input fishBag
 
 checkForValidAge :: String -> IO Int
 checkForValidAge anglerAge
+    -- isJust prüft, ob der übergebene Wert der Form Just_ entspricht, wobei readMaybe ein Just_ oder ein Nothing zurückgibt, je nachdem ob der String als Int gelesen werden kann
     -- 'return' wandelt Int in IO Int um + 'read' castet String in Int (weil vorher mit Maybe bereits überprüft)
+    -- -> HighOrder-Function weil einer Funktion als Parameter eine Funktion übergeben wird
     | isJust (readMaybe anglerAge :: Maybe Int) = return (read anglerAge :: Int)
     | otherwise = do
         putStrLn "Butter bei die Fische, gib ein valides Alter ein..."

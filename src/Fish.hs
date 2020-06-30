@@ -9,9 +9,12 @@ data Fish = Fish {
     fishWeight :: Int
 } deriving (Show, Eq)
 
-data FishType = Goldfisch | Karpfen | Lachs | Hai | Barsch | Zander deriving (Show)
+data FishType = Barbe | Brasse | Barsch | Bachforelle | Hasel | Hecht | Karpfen | Regenbogenforelle | Rotauge | Rotfeder | 
+    Dorsch | Makrele | Hering | Scholle | Lachs | Thunfisch | Seezunge | Steinbutt | Tintenfisch | Kabeljau deriving (Show)
 
-fishes = [Goldfisch, Karpfen, Lachs, Hai, Barsch, Zander]
+lakeFish = [Barbe, Brasse, Barsch, Bachforelle, Hasel, Hecht, Karpfen, Regenbogenforelle, Rotauge, Rotfeder]
+seaFish = [Dorsch, Makrele, Hering, Scholle, Lachs, Thunfisch, Seezunge, Steinbutt, Tintenfisch, Kabeljau]
+
 
 generateRandomWeight :: IO Int
 generateRandomWeight = do
@@ -26,8 +29,9 @@ generateRandomLength = do
 generateRandomFishName :: IO FishType
 generateRandomFishName = do
     gen <- newStdGen
-    let number = (head (randomRs (0,length fishes - 1) gen) :: Int)
-    return $fishes!!number
+    -- Weiteres Beispiel für HighOrder-Function (Der Funktion Head wird die Funktion randomRs übergeben)
+    let number = (head (randomRs (0,length lakeFish - 1) gen) :: Int)
+    return $lakeFish!!number
 
 generateFish :: IO Fish
 generateFish = do
