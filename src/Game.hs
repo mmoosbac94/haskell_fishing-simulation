@@ -14,14 +14,13 @@ startGame = do
     putStrLn $"Tippe '" ++ angeln ++ "' ein, wenn du bereit bist zu angeln."
     input <- getLine
     checkForValidInput input
-    currentWeather <- generateRandomWeatherCondition
-    temperatur <- generateRandomTemp    
-    let wetter = Weather {main = currentWeather, temperature = temperatur}
-    putStrLn $"Das Wetter: " ++ show(main wetter) ++ " und eine Temperatur von " ++ show(temperature wetter) ++ " Grad Celsius."        
-    showBestFishingSpot currentWeather
-    if currentWeather == Hagel 
-        then exitSuccess  -- Programm an dieser Stelle beenden
-    else putStrLn $" gehen wir " ++ setLocation currentWeather ++ " angeln ..."
+    weather <- generateWeather
+    putStrLn $"Das Wetter: " ++ show(main weather) ++ " und eine Temperatur von " ++ show(temperature weather) ++ " Grad Celsius."        
+    showBestFishingSpot $main weather
+    let location = setLocation (main weather)
+    if main weather == Hagel
+        then exitSuccess  -- Programm an dieser Stelle beenden    
+    else print $" gehen wir " ++ location ++ " angeln ..."
 
 createAngler = do
     putStrLn "Alles klar, wir wüssten natürlich gerne noch mit wem wir es heute zu tun haben!"

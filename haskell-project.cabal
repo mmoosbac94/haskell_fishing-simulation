@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 5b00bb641a9a8ba3def5c798437871f9919dc15232063184ed7c19c0f7b91060
+-- hash: 98069f33a4f639c765848e41fadff3389c85784e7b229400ccdfffabfeae39b7
 
 name:           haskell-project
 version:        0.1.0.0
@@ -36,18 +36,9 @@ library
   hs-source-dirs:
       src
   build-depends:
-      HTTP
-    , aeson
-    , attoparsec
-    , base >=4.7 && <5
-    , bytestring
-    , http-conduit
-    , network
-    , network-uri
+      base >=4.7 && <5
     , random
     , text
-    , utf8-string
-    , vector
   default-language: Haskell2010
 
 executable haskell-project-exe
@@ -58,19 +49,10 @@ executable haskell-project-exe
       app
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      HTTP
-    , aeson
-    , attoparsec
-    , base >=4.7 && <5
-    , bytestring
+      base >=4.7 && <5
     , haskell-project
-    , http-conduit
-    , network
-    , network-uri
     , random
     , text
-    , utf8-string
-    , vector
   default-language: Haskell2010
 
 test-suite haskell-project-test
@@ -82,17 +64,8 @@ test-suite haskell-project-test
       test
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      HTTP
-    , aeson
-    , attoparsec
-    , base >=4.7 && <5
-    , bytestring
+      base >=4.7 && <5
     , haskell-project
-    , http-conduit
-    , network
-    , network-uri
     , random
     , text
-    , utf8-string
-    , vector
   default-language: Haskell2010

@@ -1,13 +1,4 @@
-{-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE DeriveGeneric #-}
-
-
 module Weather where
-
-import Data.Aeson
-import qualified Data.ByteString.Lazy as B
-import Network.HTTP.Conduit (simpleHttp)
-import GHC.Generics
 
 import System.Random
 
@@ -15,7 +6,7 @@ import System.Random
 data Weather = Weather {
     main :: WeatherConditions,     
     temperature :: Int
-} deriving (Show, Eq, Generic)
+} deriving (Show, Eq)
 
 
 data WeatherConditions = Sonnig | Wolkig | Neblig | Regnerisch | Gewitter | Schneefall | Hagel deriving (Show, Eq)

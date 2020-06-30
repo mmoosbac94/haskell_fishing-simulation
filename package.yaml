@@ -22,15 +22,6 @@ description:         Please see the README on GitHub at <https://github.com/gith
 dependencies:
 - base >= 4.7 && < 5
 - random
-- HTTP
-- http-conduit
-- aeson
-- attoparsec
-- bytestring
-- network
-- network-uri
-- utf8-string
-- vector
 - text
 
 library:
