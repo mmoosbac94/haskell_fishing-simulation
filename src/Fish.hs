@@ -1,15 +1,47 @@
-module Fish where
+module Fish (Fish(..), generateFish, checkifBigFish) where
 
-import System.Random    
+import System.Random
 
 -- Record Syntax
 data Fish = Fish {
-    name :: String,
-    length :: Int,
-    weight :: Int
-} deriving (Show)
+    fishName :: String,
+    fishLength :: Int,
+    fishWeight :: Int
+} deriving (Show, Eq)
+
+data FishType = Barbe | Brasse | Barsch | Bachforelle | Hasel | Hecht | Karpfen | Regenbogenforelle | Rotauge | Rotfeder | 
+    Dorsch | Makrele | Hering | Scholle | Lachs | Thunfisch | Seezunge | Steinbutt | Tintenfisch | Kabeljau deriving (Show)
+
+lakeFish = [Barbe, Brasse, Barsch, Bachforelle, Hasel, Hecht, Karpfen, Regenbogenforelle, Rotauge, Rotfeder]
+seaFish = [Dorsch, Makrele, Hering, Scholle, Lachs, Thunfisch, Seezunge, Steinbutt, Tintenfisch, Kabeljau]
 
 
+generateRandomWeight :: IO Int
 generateRandomWeight = do
-    gen <- getStdGen
-    print $"Zufällige Zahl: " ++ show (head (randomRs (500,10000) gen) :: Int)
+    gen <- newStdGen
+    return (head (randomRs (500,10000) gen) :: Int)
+
+generateRandomLength :: IO Int
+generateRandomLength = do
+    gen <- newStdGen
+    return (head (randomRs (3,100) gen) :: Int)
+
+generateRandomFishName :: IO FishType
+generateRandomFishName = do
+    gen <- newStdGen
+    -- Weiteres Beispiel für HighOrder-Function (Der Funktion Head wird die Funktion randomRs übergeben)
+    let number = (head (randomRs (0,length lakeFish - 1) gen) :: Int)
+    return $lakeFish!!number
+
+generateFish :: IO Fish
+generateFish = do
+    fishName <- generateRandomFishName
+    let fishNameString = show fishName
+    weight <- generateRandomWeight
+    length <- generateRandomLength
+    return Fish {fishName=fishNameString, fishLength=length, fishWeight=weight}
+
+checkifBigFish :: Int -> Bool
+checkifBigFish weight
+    | weight >= 5000 = True
+    | otherwise = False
