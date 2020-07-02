@@ -98,13 +98,24 @@ checkForValidAngelnInput x = do
 
 checkForValidLosInput :: String -> IO()
 checkForValidLosInput "Los!" = do
-    checkedWeather <- checkWeather 
+    checkedWeather <- checkWeather
+    print "Bist du bereit die Angel auszuwerfen? Dann tippe 'Yes' ein"
+    input <- getLine
+    continueWithFishing input
     startFishing [] checkedWeather
 checkForValidLosInput x = do
     putStrLn $"Du musst '" ++ los ++ "' eingeben!"
     input <- getLine
     checkForValidLosInput input  
-      
+
+    
+continueWithFishing :: String -> IO()
+continueWithFishing "Yes" = return ()
+continueWithFishing x = do
+    print "Lass dir Zeit, wenn du bereit bist, tippe 'Yes' ein"
+    input <- getLine
+    continueWithFishing input
+
 
 checkForValidReadyInput :: String -> [Fish] -> WeatherConditions -> IO()
 checkForValidReadyInput input fishBag checkedWeather
