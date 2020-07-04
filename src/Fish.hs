@@ -8,7 +8,13 @@ data Fish = Fish {
     fishName :: String,
     fishLength :: Int,
     fishWeight :: Int
-} deriving (Show, Eq)
+} deriving (Eq)
+
+-- Thema-ABSTRAKTION
+-- Wir erstellen uns eine Instanz vom Datatype 'Fish' und implementieren die Typeclass 'Show'
+-- und überschreiben dann die 'show-Methode' (ähnlich zu to-String Methode in z.B. Java)
+instance Show Fish where
+    show fish = fishName fish ++ " mit einem Gewicht von " ++ show (fishWeight fish) ++ " g und einer Länge von " ++ show (fishLength fish) ++ " cm" 
 
 data FishType = Barbe | Brasse | Barsch | Bachforelle | Hasel | Hecht | Karpfen | Regenbogenforelle | Rotauge | Rotfeder | 
     Dorsch | Makrele | Hering | Scholle | Lachs | Thunfisch | Seezunge | Steinbutt | Tintenfisch | Kabeljau deriving (Show)

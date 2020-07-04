@@ -156,6 +156,10 @@ setLocation Gewitter = "zum Baggersee"
 setLocation Schneefall = "nach Sibirien"
 setLocation Hagel = ""
 
+
+-- Beispiel für High-Order-Function + Lazy-Aspekt, weil randomRS normalerweise eine unendliche Liste von Zahlen zurückgibt, aber durch head weiß Haskell
+-- dass nur eine Zahl benötigt wird (mehr wird nicht gemacht, weil Haskell zu faul ist und es nicht als nötig ansieht)
+
 generateRandomDelay :: IO Int
 generateRandomDelay = do
     gen <- newStdGen
