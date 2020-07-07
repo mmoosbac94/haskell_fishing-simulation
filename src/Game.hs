@@ -16,6 +16,7 @@ ready = "R"
 los = "Los!"
 
 
+-- Start-Funktion des Projekts (Begrüßung)
 startGame = do
     putStrLn "Herzlich Willkommen zur Angelsimulation!"
     putStrLn $"Tippe '" ++ angeln ++ "' ein, wenn du bereit bist zu angeln."
@@ -33,7 +34,7 @@ checkWeather = do
     else print $" gehen wir " ++ location ++ " angeln ..."
     return (main weather)
 
-
+-- Charakter mit Namen und Alter angeben
 createAngler = do
     putStrLn "Alles klar, wir wüssten natürlich gerne noch mit wem wir es heute zu tun haben!"
     putStrLn "Bitte gib zunächst deinen Namen ein: "
@@ -48,9 +49,13 @@ createAngler = do
     input <- getLine
     checkForValidLosInput input
 
+
+-- Eigentliche GAME-LOOP, Programm läuft prinzipiell nur hier, wenn Begrüßung, Charakter anlegen
+-- und Auswahl des Fishing-Spots anhand des Wetter abgerufen wurde
 startFishing :: [Fish] -> WeatherConditions -> IO()
 startFishing fishBag checkedWeather = do
     putStrLn "Alles klar, Angel wird ausgeworfen..."
+    -- Zufällige Zeit bis zu einem Biss wird generiert
     randomDelay <- generateRandomDelay
     print randomDelay
     threadDelay randomDelay
@@ -58,14 +63,19 @@ startFishing fishBag checkedWeather = do
     generatedFish <- generateFish checkedWeather
     let weight = fishWeight generatedFish
     let isBig = checkifBigFish weight
+    -- Ausgabe, ob ein großer oder kleiner Fisch angebissen hat
     printSuccessBasedOnWeight isBig generatedFish
-    
     putStrLn $"Möchtest du die/den " ++ show(fishName generatedFish) ++ " in die Tasche stecken? (Ja/Nein)"
     input <- getLine
+    -- Tasche in Form von Liste wird erstellt und der Fisch nach Wunsch reingepackt, 
+    -- ansonsten wird er freigelassen (zu beachten ist, dass Tasche bei jedem Angel-Durchlauf
+    -- neu erstellt wird, weil Variablen in Haskell immutable sind)
     newFishBag <- checkPutInFishBag input generatedFish fishBag
     if fishBag == newFishBag then putStrLn "Fisch wurde freigelassen" else putStrLn "Fisch wurde in Tasche gepackt"
+    -- Anzeigen der Fische in der Tasche
     putStrLn $"Deine Tasche: " ++ show newFishBag
-    
+    -- Rekursions-Beispiel
+    -- Möchte man weiter angeln, wird die Funktion rekursiv aufgerufen und die Tasche übergeben, damit 
     putStrLn $"Du hast noch nicht genug? Wirf die Angeln nochmal aus, indem du '" ++ ready ++ "' eingibst."    
     input <- getLine
     checkForValidReadyInput input newFishBag checkedWeather
@@ -77,8 +87,10 @@ printSuccessBasedOnWeight isBig generatedFish
     | otherwise = putStrLn $"...Nanu, es hat nur etwas Kleines angebissen! Es ist ein/e " ++ show(fishName generatedFish) ++ " mit einem Gewicht von " ++ show(fishWeight generatedFish) ++ " g und einer Länge von " ++ show(fishLength generatedFish) ++ " cm."    
 
 
+-- Prüfen, ob Fisch der Tasche hinzugefügt werden soll oder nicht
 checkPutInFishBag :: String -> Fish -> [Fish] -> IO [Fish]
 checkPutInFishBag input generatedFish fishBag
+    -- ':' ist cons-Operator und fügt Element am Anfang einer Liste ein
     | input == "Ja" = return $generatedFish : fishBag
     | input == "Nein" = return fishBag
     | otherwise = do
@@ -87,15 +99,17 @@ checkPutInFishBag input generatedFish fishBag
         checkPutInFishBag input generatedFish fishBag
 
 
+-- ValidierungsMethode für Text-Input
 checkForValidAngelnInput :: String -> IO()
 checkForValidAngelnInput "Angeln" = createAngler
 
 checkForValidAngelnInput x = do
     putStrLn $"Du musst '" ++ angeln ++ "' eingeben!"
     input <- getLine
-    checkForValidAngelnInput input    
+    checkForValidAngelnInput input
 
-
+-- ValidierungsMethode für Text-Input
+-- Auslösen der eigentlichen GAME-LOOP (start-fishing-Funktion)
 checkForValidLosInput :: String -> IO()
 checkForValidLosInput "Los!" = do
     checkedWeather <- checkWeather
@@ -117,6 +131,7 @@ continueWithFishing x = do
     continueWithFishing input
 
 
+-- ValidierungsMethode für Text-Input, um weiter zu angeln
 checkForValidReadyInput :: String -> [Fish] -> WeatherConditions -> IO()
 checkForValidReadyInput input fishBag checkedWeather
     | input == ready = startFishing fishBag checkedWeather
@@ -125,6 +140,8 @@ checkForValidReadyInput input fishBag checkedWeather
         input <- getLine
         checkForValidReadyInput input fishBag checkedWeather    
 
+
+-- ValidierungsMethode für Text-Input des Alters
 checkForValidAge :: String -> IO Int
 checkForValidAge anglerAge
     -- isJust prüft, ob der übergebene Wert der Form Just_ entspricht, wobei readMaybe ein Just_ oder ein Nothing zurückgibt, je nachdem ob der String als Int gelesen werden kann
@@ -156,7 +173,7 @@ setLocation Gewitter = "zum Baggersee"
 setLocation Schneefall = "nach Sibirien"
 setLocation Hagel = ""
 
-
+-- Generierung eines zufälligen Werts bis zu einem Biss
 -- Beispiel für High-Order-Function + Lazy-Aspekt, weil randomRS normalerweise eine unendliche Liste von Zahlen zurückgibt, aber durch head weiß Haskell
 -- dass nur eine Zahl benötigt wird (mehr wird nicht gemacht, weil Haskell zu faul ist und es nicht als nötig ansieht)
 

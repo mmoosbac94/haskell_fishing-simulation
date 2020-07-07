@@ -1,9 +1,11 @@
+-- An dieser Stelle wird festgelegt, welche Methoden nach außen hin sichtbar sein sollen
+-- und somit verwendet werden können
 module Fish (Fish(..), generateFish, checkifBigFish) where
 
 import System.Random
 import Weather
 
--- Record Syntax
+-- Record Syntax zur Erstellung von eigenen Datentypen
 data Fish = Fish {
     fishName :: String,
     fishLength :: Int,
@@ -16,6 +18,7 @@ data Fish = Fish {
 instance Show Fish where
     show fish = fishName fish ++ " mit einem Gewicht von " ++ show (fishWeight fish) ++ " g und einer Länge von " ++ show (fishLength fish) ++ " cm" 
 
+-- Enum von FishTypes
 data FishType = Barbe | Brasse | Barsch | Bachforelle | Hasel | Hecht | Karpfen | Regenbogenforelle | Rotauge | Rotfeder | 
     Dorsch | Makrele | Hering | Scholle | Lachs | Thunfisch | Seezunge | Steinbutt | Tintenfisch | Kabeljau deriving (Show)
 
@@ -33,18 +36,20 @@ generateRandomLength = do
     gen <- newStdGen
     return (head (randomRs (3,100) gen) :: Int)
 
+
+-- Ein zufälliger FischType wird je nach Wettersituation (und damit Fishing-Spot) aus den
+-- oben definierten Listen ermittelt
 generateRandomFishName :: WeatherConditions -> IO FishType
 generateRandomFishName checkedWeather = do
     gen <- newStdGen
     if checkedWeather == Sonnig || checkedWeather == Wolkig then do
-        -- Weiteres Beispiel für HighOrder-Function (Der Funktion Head wird die Funktion randomRs übergeben)
         let number = (head (randomRs (0,length seaFish - 1) gen) :: Int)
         return $seaFish!!number
     else do
         let number = (head (randomRs (0,length lakeFish - 1) gen) :: Int)
         return $lakeFish!!number
 
-
+-- Rückgabe des erstellten Fisches
 generateFish :: WeatherConditions -> IO Fish 
 generateFish checkedWeather = do
         fishName <- generateRandomFishName checkedWeather
@@ -53,6 +58,7 @@ generateFish checkedWeather = do
         length <- generateRandomLength
         return Fish {fishName=fishNameString, fishLength=length, fishWeight=weight}  
 
+-- Prüfen, ob ein großer Fisch gefangen wurde oder nicht
 checkifBigFish :: Int -> Bool
 checkifBigFish weight
     | weight >= 5000 = True
