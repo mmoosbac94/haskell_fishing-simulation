@@ -156,6 +156,7 @@ checkForValidAge anglerAge
 
 -- Gibt eine Ausgabe in Abhängigkeit der WeatherCondition (Eingabeparameter) mit putStrLn zurück: Rückgabetyp IO().
 -- Es wird die beste Angler-Location als String ausgegeben. Die Funktion wird in 'checkWeather' aufgerufen.
+-- Hier werden Guards zur Unterscheidung verwendet.
 showBestFishingSpot :: WeatherConditions -> IO()
 showBestFishingSpot weatherCondString
     | weatherCondString == Sonnig = putStrLn "Super! Es ist sonnig, wir gehen ans Meer zum fischen!"
