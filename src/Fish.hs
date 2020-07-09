@@ -14,7 +14,8 @@ data Fish = Fish {
 
 -- Thema-ABSTRAKTION
 -- Wir erstellen uns eine Instanz vom Datatype 'Fish' und implementieren die Typeclass 'Show'
--- und überschreiben dann die 'show-Methode' (ähnlich zu to-String Methode in z.B. Java)
+-- und überschreiben dann die 'show-Methode' (ähnlich zu to-String Methode in z.B. Java, 
+-- Typeclasses sind vergleichbar mit Interfaces in Java)
 instance Show Fish where
     show fish = fishName fish ++ " mit einem Gewicht von " ++ show (fishWeight fish) ++ " g und einer Länge von " ++ show (fishLength fish) ++ " cm" 
 

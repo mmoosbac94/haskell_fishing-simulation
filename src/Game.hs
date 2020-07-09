@@ -122,7 +122,8 @@ checkForValidLosInput x = do
     input <- getLine
     checkForValidLosInput input  
 
-    
+-- ValidierungsMethode für Text-Input
+-- Pattern-Matching Beispiel    
 continueWithFishing :: String -> IO()
 continueWithFishing "Yes" = return ()
 continueWithFishing x = do
