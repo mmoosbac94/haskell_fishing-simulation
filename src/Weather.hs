@@ -27,7 +27,6 @@ generateRandomTemp = do
     else if condition == Schneefall then return (head (randomRs (-20,0) gen) :: Int)
     else return (head (randomRs (1,30) gen) :: Int)
         
-    
 
 -- Hier wird eine zufällige Wetterbedingung generiert. Dabei wird aus der Liste 'weather'
 -- ein Eintrag mit head randomRs(0, length List weather - 1) genommen und zurückgegeben

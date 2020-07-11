@@ -160,23 +160,23 @@ checkForValidAge anglerAge
 -- Hier werden Guards zur Unterscheidung verwendet.
 showBestFishingSpot :: WeatherConditions -> IO()
 showBestFishingSpot weatherCondString
-    | weatherCondString == Sonnig = putStrLn "Super! Es ist sonnig, wir gehen ans Meer zum fischen!"
-    | weatherCondString == Wolkig = putStrLn "Das Wetter ist nicht so gut, lass uns lieber an den nächsten See gehen!"
-    | weatherCondString == Neblig = putStrLn "Es ist neblig. Du könntest die Fische nicht so gut sehen! Gehen wir an den Rhein!"
-    | weatherCondString == Regnerisch =  putStrLn "Es regnet! Wir fahren besser nach Norwegen und fischen an einem Fjord. Da gibt es bestimmt frischen Lachs!"
+    | weatherCondString == Sonnig = putStrLn "Super! Es ist sonnig, wir gehen ans Meer zum Fischen!"
+    | weatherCondString == Wolkig = putStrLn "Das Wetter ist okay, lass uns zu einen Angelversuch am Meer starten!"
+    | weatherCondString == Neblig = putStrLn "Es ist neblig. Du könntest dich bei unbekannten Gewässern verirren! Gehen wir lieber an den Rhein!"
+    | weatherCondString == Regnerisch =  putStrLn "Es regnet! Wir fahren besser an den nächstgelegenen See!"
     | weatherCondString == Gewitter = putStrLn "Pfui! Es sind starke Gewitter unterwegs. Wir gehen lieber zum Baggersee"
-    | weatherCondString == Schneefall = putStrLn "Es schneit! Eisfischen in Sibiren ist auch ganz cool!"
+    | weatherCondString == Schneefall = putStrLn "Es schneit! Eisfischen am See ist auch ganz cool!"
     | weatherCondString == Hagel = putStrLn "Willst du wirklich Fischen gehen bei Hagel? Lass es besser!"
 
 -- setzt die Angler-Location abhängig von der WeatherCondition, die im Spiel in der Funktion 'checkWeather' ausgegeben wird. 
 -- Verwendet Pattern-matching und hat als Eingabeparameter WeatherConditions
 setLocation :: WeatherConditions -> String
 setLocation Sonnig = "ans Meer"  
-setLocation Wolkig = "zum See"  
+setLocation Wolkig = "ans Meer"  
 setLocation Neblig = "zum Fluss" 
-setLocation Regnerisch = "zum Fjord in Norwegen" 
+setLocation Regnerisch = "zum See" 
 setLocation Gewitter = "zum Baggersee"
-setLocation Schneefall = "nach Sibirien"
+setLocation Schneefall = "zum vereisten See"
 setLocation Hagel = ""
 
 -- Generierung eines zufälligen Werts bis zu einem Biss
